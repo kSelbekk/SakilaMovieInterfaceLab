@@ -95,6 +95,50 @@
         </tbody>
 
     }
+    <tfoot>
+        <tr>
+            <td>
+                <nav>
+                    <ul class="pagination justify-content-center">
+                        <li class="page-item @(Model.Page == 1 ? "disabled" : "")">
+                            <a class="page-link active text-warning"
+                               asp-action="Index"
+                               asp-route-q="@Model.q"
+                               asp-route-page="@(Model.Page -1)"
+                               asp-route-sortField="@Model.SortField"
+                               asp-route-sortOrder="@Model.SortOrder">
+                                <span aria-hidden="true">&laquo;</span>
+                                <span class="sr-only">Previus</span>
+                            </a>
+                        </li>
+                        @for (var p = 1; p <= @Model.TotalPages; p++)
+                        {
+                            <li class="page-item @(Model.Page == p ? "active" : "")">
+                                <a class="page-link active text-warning"
+                                   asp-action="Index"
+                                   asp-route-q="@Model.q"
+                                   asp-route-sortField="@Model.SortField"
+                                   asp-route-sortOrder="@Model.SortOrder"
+                                   asp-route-page="@p">@p</a>
+                            </li>
+                        }
+
+                        <li class="page-item @(Model.Page == Model.TotalPages ? "disabled" : "")">
+                            <a class="page-link active text-warning"
+                               asp-action="Index"
+                               asp-route-q="@Model.q"
+                               asp-route-sortField="@Model.SortField"
+                               asp-route-sortOrder="@Model.SortOrder"
+                               asp-route-page="@(Model.Page +1)">
+                                <span aria-hidden="true">&raquo;</span>
+                                <span class="sr-only">Next</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </td>
+        </tr>
+    </tfoot>
 </table>
 
 @section Scripts

@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using SakilaMovieInterfaceLab.Data;
 using SakilaMovieInterfaceLab.Services;
@@ -16,9 +17,10 @@ namespace SakilaMovieInterfaceLab.Controllers
         }
 
         // GET
-        public IActionResult Index(string q, string sortField, string sortOrder)
+        public IActionResult Index(string q, string sortField, string sortOrder, int pageSize = 15, int page = 1)
         {
             var query = _movieRepository.GetAllMovies().Where(film => q == null || film.Title.Contains(q.ToUpper()));
+            var totalRowCount = query.Count();
 
             if (string.IsNullOrEmpty(sortField))
             {
@@ -42,6 +44,10 @@ namespace SakilaMovieInterfaceLab.Controllers
                 query = sortOrder == "asc" ? query.OrderBy(t => t.RentalRate) : query.OrderByDescending(t => t.RentalRate);
             }
 
+            var pageCount = (double)totalRowCount / pageSize;
+            var howManyToSKip = (page - 1) * pageSize;
+            query = query.Skip(howManyToSKip).Take(pageSize);
+
             var viewModel = new MovieIndexViewModel
             {
                 Films = query
@@ -56,6 +62,9 @@ namespace SakilaMovieInterfaceLab.Controllers
                 SortOrder = sortOrder,
                 SortField = sortField,
                 OpositeSortOrder = sortOrder == "asc" ? "desc" : "asc",
+                Page = page,
+                TotalPages = (int)Math.Ceiling(pageCount),
+                PageSize = pageSize
             };
 
             return View(viewModel);
