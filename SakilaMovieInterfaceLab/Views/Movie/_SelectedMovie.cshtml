@@ -1,0 +1,22 @@
+﻿@model SakilaMovieInterfaceLab.ViewModels.MovieSelectedMovieViewModel
+
+@{
+    Layout = null;
+}
+
+<div class="card m-4 bg-dark text-white" style="width: auto;">
+    <div class="card-body">
+        <h5 class="card-title">@Model.Title</h5>
+        <p class="card-subtitle mb-2 text-muted">Release Year: @Model.ReleaseYear</p>
+        <p class="card-subtitle mb-2 text-muted">@Model.Length min</p>
+        <p class="card-subtitle mb-2 text-muted">Rating @Model.Rating</p>
+        <p class="card-text">@Model.Description</p>
+        <p class="card-subtitle mb-2 text-muted">Special features: @Model.SpecialFeatures</p>
+        <p class="card-text m-0">Rental rate: $@Model.RentalRate</p>
+        <p class="card-text m-0">Replacement Cost: $@Model.ReplacementCost</p>
+        <p class="card-text m-0">RentalDuration: @Model.RentalDuration days</p>
+        <p class="card-text m-0"> @Model.OriginalLanguageId</p>
+        <p class="card-text m-0">LanguageId: @Model.LanguageId</p>
+        <p class="card-subtitle mb-2 text-muted">Last Updatade: @Model.LastUpdate</p>
+    </div>
+</div>

@@ -24,8 +24,32 @@ namespace SakilaMovieInterfaceLab.Controllers
                 {
                     Id = dbFilms.FilmId,
                     Title = dbFilms.Title,
-                    RelesYear = dbFilms.ReleaseYear
+                    ReleaseYear = dbFilms.ReleaseYear
                 }).ToList()
+            };
+
+            return View(viewModel);
+        }
+
+        public IActionResult _SelectedMovie(int id)
+        {
+            var film = _movieRepository.GetSelectedMovie(id);
+
+            var viewModel = new MovieSelectedMovieViewModel
+            {
+                Id = film.FilmId,
+                Title = film.Title,
+                ReleaseYear = film.ReleaseYear,
+                Description = film.Description,
+                Length = film.Length,
+                LanguageId = film.LanguageId,
+                LastUpdate = film.LastUpdate,
+                Rating = film.Rating,
+                RentalDuration = film.RentalDuration,
+                RentalRate = film.RentalRate,
+                ReplacementCost = film.ReplacementCost,
+                OriginalLanguageId = film.OriginalLanguageId,
+                SpecialFeatures = film.SpecialFeatures
             };
 
             return View(viewModel);

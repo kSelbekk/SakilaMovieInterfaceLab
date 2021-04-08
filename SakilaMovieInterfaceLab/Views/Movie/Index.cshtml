@@ -1,8 +1,10 @@
 ﻿@model SakilaMovieInterfaceLab.ViewModels.MovieIndexViewModel
 
 @{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Movies";
 }
+
+<div id="selectedMovie"></div>
 
 <table class="table table-dark">
     <thead>
@@ -16,13 +18,26 @@
         <tbody>
             <tr>
                 <td>
-                    @i.Title
+                    <a href="#" type="button" onclick="FetchMovie(@i.Id);" class="btn btn-link active text-white" role="button" aria-pressed="true">@i.Title</a>
                 </td>
                 <td>
-                    @i.RelesYear
-                </td>
+                    @i.ReleaseYear
             </tr>
         </tbody>
 
     }
 </table>
+
+@section Scripts
+{
+    <script>
+        function FetchMovie(id) {
+            $.ajax({
+                url: "/Movie/_selectedmovie/" + id,
+                success: function (result) {
+                    $('#selectedMovie').html(result);
+                }
+            });
+        }
+    </script>
+}
