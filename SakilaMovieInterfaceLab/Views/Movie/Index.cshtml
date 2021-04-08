@@ -3,14 +3,79 @@
 @{
     ViewData["Title"] = "Movies";
 }
+<nav class="navbar navbar-dark bg-dark">
+    <form method="get" class="form-inline my-2 my-lg-0 m-3 p-2 bg-dark text-white"
+          asp-action="Index">
+        <input class="form-control mr-sm-2" type="text" asp-for="q" placeholder="Search movie...">
+        <button class="btn btn-outline-warning my-2 my-sm-0" type="submit">Search</button>
+    </form>
+</nav>
 
 <div id="selectedMovie"></div>
 
 <table class="table table-dark">
     <thead>
         <tr>
-            <th scope="col">Title</th>
-            <th scope="col">Relese Year</th>
+            <th scope="col">
+                <a class="btn btn-link btn-lg active text-warning"
+                   asp-action="Index"
+                   asp-route-q="@Model.q"
+                   asp-route-sortField="Title"
+                   asp-route-sortOrder="@(Model.SortField == "Title" ? Model.OpositeSortOrder : "" )">
+                    Title
+                    @if (Model.SortField == "Title")
+                    {
+                        if (Model.SortOrder == "asc")
+                        {
+                            <i class="fas fa-sort-up"></i>
+                        }
+                        else
+                        {
+                            <i class="fas fa-sort-down"></i>
+                        }
+                    }
+                </a>
+            </th>
+            <th scope="col">
+                <a class="btn btn-link btn-lg active text-warning"
+                   asp-action="Index"
+                   asp-route-q="@Model.q"
+                   asp-route-sortField="Release Year"
+                   asp-route-sortOrder="@(Model.SortField == "Release Year" ? Model.OpositeSortOrder : "" )">
+                    Release Year
+                    @if (Model.SortField == "Release Year")
+                    {
+                        if (Model.SortOrder == "asc")
+                        {
+                            <i class="fas fa-sort-up"></i>
+                        }
+                        else
+                        {
+                            <i class="fas fa-sort-down"></i>
+                        }
+                    }
+                </a>
+            </th>
+            <th scope="col">
+                <a class="btn btn-link btn-lg active text-warning"
+                   asp-action="Index"
+                   asp-route-q="@Model.q"
+                   asp-route-sortField="Rental Rate"
+                   asp-route-sortOrder="@(Model.SortField == "Rental Rate" ? Model.OpositeSortOrder : "" )">
+                    Rental Rate
+                    @if (Model.SortField == "Rental Rate")
+                    {
+                        if (Model.SortOrder == "asc")
+                        {
+                            <i class="fas fa-sort-up"></i>
+                        }
+                        else
+                        {
+                            <i class="fas fa-sort-down"></i>
+                        }
+                    }
+                </a>
+            </th>
         </tr>
     </thead>
     @foreach (var i in Model.Films)
@@ -22,6 +87,10 @@
                 </td>
                 <td>
                     @i.ReleaseYear
+                </td>
+                <td>
+                    $@i.RentalRate
+                </td>
             </tr>
         </tbody>
 

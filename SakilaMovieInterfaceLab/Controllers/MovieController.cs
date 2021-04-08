@@ -16,16 +16,46 @@ namespace SakilaMovieInterfaceLab.Controllers
         }
 
         // GET
-        public IActionResult Index()
+        public IActionResult Index(string q, string sortField, string sortOrder)
         {
+            var query = _movieRepository.GetAllMovies().Where(film => q == null || film.Title.Contains(q.ToUpper()));
+
+            if (string.IsNullOrEmpty(sortField))
+            {
+                sortField = "Title";
+            }
+            if (string.IsNullOrEmpty(sortOrder))
+            {
+                sortOrder = "asc";
+            }
+
+            if (sortField == "Title")
+            {
+                query = sortOrder == "asc" ? query.OrderBy(t => t.Title) : query.OrderByDescending(t => t.Title);
+            }
+            if (sortField == "Release Year")
+            {
+                query = sortOrder == "asc" ? query.OrderBy(t => t.ReleaseYear) : query.OrderByDescending(t => t.ReleaseYear);
+            }
+            if (sortField == "Rental Rate")
+            {
+                query = sortOrder == "asc" ? query.OrderBy(t => t.RentalRate) : query.OrderByDescending(t => t.RentalRate);
+            }
+
             var viewModel = new MovieIndexViewModel
             {
-                Films = _movieRepository.GetAllMovies().Select(dbFilms => new MovieIndexViewModel.FilmViewModel
-                {
-                    Id = dbFilms.FilmId,
-                    Title = dbFilms.Title,
-                    ReleaseYear = dbFilms.ReleaseYear
-                }).ToList()
+                Films = query
+                    .Select(dbFilms => new MovieIndexViewModel.FilmViewModel
+                    {
+                        Id = dbFilms.FilmId,
+                        Title = dbFilms.Title,
+                        ReleaseYear = dbFilms.ReleaseYear,
+                        RentalRate = dbFilms.RentalRate
+                    }).ToList(),
+                q = q,
+                SortOrder = sortOrder,
+                SortField = sortField,
+                OpositeSortOrder = sortOrder == "asc" ? "desc" : "asc",
             };
 
             return View(viewModel);

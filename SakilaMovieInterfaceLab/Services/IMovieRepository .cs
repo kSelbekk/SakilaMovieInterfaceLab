@@ -7,7 +7,7 @@ namespace SakilaMovieInterfaceLab.Services
 {
     public interface IMovieRepository
     {
-        public IEnumerable<Film> GetAllMovies();
+        public IQueryable<Film> GetAllMovies();
 
         public Film GetSelectedMovie(int id);
     }
@@ -21,7 +21,7 @@ namespace SakilaMovieInterfaceLab.Services
             _sakilaContext = sakilaContext;
         }
 
-        public IEnumerable<Film> GetAllMovies()
+        public IQueryable<Film> GetAllMovies()
         {
             return _sakilaContext.Films;
         }
