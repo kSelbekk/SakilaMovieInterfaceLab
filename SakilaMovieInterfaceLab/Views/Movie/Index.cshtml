@@ -6,9 +6,29 @@
 <nav class="navbar navbar-dark bg-dark">
     <form method="get" class="form-inline my-2 my-lg-0 m-3 p-2 bg-dark text-white"
           asp-action="Index">
-        <input class="form-control mr-sm-2" type="text" asp-for="q" placeholder="Search movie...">
+        <input class="form-control mr-sm-2" placeholder="Search movie..."
+               type="text"
+               asp-for="q">
         <button class="btn btn-outline-warning my-2 my-sm-0" type="submit">Search</button>
     </form>
+
+    <div class="dropdown">
+        <button class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Visa</button>
+        <div class="dropdown-menu">
+            @foreach (var i in Model.PageSizing)
+            {
+                <a class="dropdown-item"
+                   asp-action="Index"
+                   asp-route-q="@Model.q"
+                   asp-route-page="@(Model.Page)"
+                   asp-route-sortField="@Model.SortField"
+                   asp-route-sortOrder="@Model.SortOrder"
+                   asp-route-pageSize="@i.Value">
+                    @i.Text
+                </a>
+            }
+        </div>
+    </div>
 </nav>
 
 <div id="selectedMovie"></div>
@@ -21,7 +41,8 @@
                    asp-action="Index"
                    asp-route-q="@Model.q"
                    asp-route-sortField="Title"
-                   asp-route-sortOrder="@(Model.SortField == "Title" ? Model.OpositeSortOrder : "" )">
+                   asp-route-pageSize="@Model.PageSize"
+                   asp-route-sortOrder="@(Model.SortField == "Title" ? Model.OpositeSortOrder : "")">
                     Title
                     @if (Model.SortField == "Title")
                     {
@@ -41,7 +62,8 @@
                    asp-action="Index"
                    asp-route-q="@Model.q"
                    asp-route-sortField="Release Year"
-                   asp-route-sortOrder="@(Model.SortField == "Release Year" ? Model.OpositeSortOrder : "" )">
+                   asp-route-pageSize="@Model.PageSize"
+                   asp-route-sortOrder="@(Model.SortField == "Release Year" ? Model.OpositeSortOrder : "")">
                     Release Year
                     @if (Model.SortField == "Release Year")
                     {
@@ -61,7 +83,8 @@
                    asp-action="Index"
                    asp-route-q="@Model.q"
                    asp-route-sortField="Rental Rate"
-                   asp-route-sortOrder="@(Model.SortField == "Rental Rate" ? Model.OpositeSortOrder : "" )">
+                   asp-route-pageSize="@Model.PageSize"
+                   asp-route-sortOrder="@(Model.SortField == "Rental Rate" ? Model.OpositeSortOrder : "")">
                     Rental Rate
                     @if (Model.SortField == "Rental Rate")
                     {
@@ -106,21 +129,40 @@
                                asp-route-q="@Model.q"
                                asp-route-page="@(Model.Page -1)"
                                asp-route-sortField="@Model.SortField"
-                               asp-route-sortOrder="@Model.SortOrder">
+                               asp-route-sortOrder="@Model.SortOrder"
+                               asp-route-pageSize="@Model.PageSize">
                                 <span aria-hidden="true">&laquo;</span>
                                 <span class="sr-only">Previus</span>
                             </a>
                         </li>
                         @for (var p = 1; p <= @Model.TotalPages; p++)
                         {
-                            <li class="page-item @(Model.Page == p ? "active" : "")">
-                                <a class="page-link active text-warning"
-                                   asp-action="Index"
-                                   asp-route-q="@Model.q"
-                                   asp-route-sortField="@Model.SortField"
-                                   asp-route-sortOrder="@Model.SortOrder"
-                                   asp-route-page="@p">@p</a>
-                            </li>
+                            if (Model.Page == p)
+                            {
+                                var end = p + 2;
+                                var start = p;
+                                if (p > 2)
+                                {
+                                    start = p - 2;
+                                }
+                                if (end == Model.TotalPages)
+                                {
+                                    end = Model.Page;
+                                }
+                                for (var paging = start; start <= end; start++)
+                                {
+                                    <li class="page-item @(Model.Page == start ? "active" : "")">
+                                        <a class="page-link active text-warning"
+                                           asp-action="Index"
+                                           asp-route-q="@Model.q"
+                                           asp-route-sortField="@Model.SortField"
+                                           asp-route-sortOrder="@Model.SortOrder"
+                                           asp-route-pageSize="@Model.PageSize"
+                                           asp-route-page="@start">@start</a>
+                                    </li>
+                                }
+                            }
+
                         }
 
                         <li class="page-item @(Model.Page == Model.TotalPages ? "disabled" : "")">
@@ -129,6 +171,7 @@
                                asp-route-q="@Model.q"
                                asp-route-sortField="@Model.SortField"
                                asp-route-sortOrder="@Model.SortOrder"
+                               asp-route-pageSize="@Model.PageSize"
                                asp-route-page="@(Model.Page +1)">
                                 <span aria-hidden="true">&raquo;</span>
                                 <span class="sr-only">Next</span>

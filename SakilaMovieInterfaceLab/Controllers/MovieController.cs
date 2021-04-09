@@ -17,10 +17,11 @@ namespace SakilaMovieInterfaceLab.Controllers
         }
 
         // GET
-        public IActionResult Index(string q, string sortField, string sortOrder, int pageSize = 15, int page = 1)
+        public IActionResult Index(string q, string sortField, string sortOrder, string pageSize, int page = 1)
         {
             var query = _movieRepository.GetAllMovies().Where(film => q == null || film.Title.Contains(q.ToUpper()));
             var totalRowCount = query.Count();
+            var size = 15;
 
             if (string.IsNullOrEmpty(sortField))
             {
@@ -29,6 +30,10 @@ namespace SakilaMovieInterfaceLab.Controllers
             if (string.IsNullOrEmpty(sortOrder))
             {
                 sortOrder = "asc";
+            }
+            if (!string.IsNullOrEmpty(pageSize))
+            {
+                size = Int32.Parse(pageSize);
             }
 
             if (sortField == "Title")
@@ -44,9 +49,9 @@ namespace SakilaMovieInterfaceLab.Controllers
                 query = sortOrder == "asc" ? query.OrderBy(t => t.RentalRate) : query.OrderByDescending(t => t.RentalRate);
             }
 
-            var pageCount = (double)totalRowCount / pageSize;
-            var howManyToSKip = (page - 1) * pageSize;
-            query = query.Skip(howManyToSKip).Take(pageSize);
+            var pageCount = (double)totalRowCount / size;
+            var howManyToSKip = (page - 1) * size;
+            query = query.Skip(howManyToSKip).Take(size);
 
             var viewModel = new MovieIndexViewModel
             {
@@ -64,7 +69,7 @@ namespace SakilaMovieInterfaceLab.Controllers
                 OpositeSortOrder = sortOrder == "asc" ? "desc" : "asc",
                 Page = page,
                 TotalPages = (int)Math.Ceiling(pageCount),
-                PageSize = pageSize
+                PageSize = size
             };
 
             return View(viewModel);
