@@ -3,7 +3,7 @@
 @{
     ViewData["Title"] = "Movies";
 }
-<nav class="navbar navbar-dark bg-dark">
+<nav class="navbar navbar-dark bg-dark sticky-top">
     <form method="get" class="form-inline my-2 my-lg-0 m-3 p-2 bg-dark text-white"
           asp-action="Index">
         <input class="form-control mr-sm-2" placeholder="Search movie..."
@@ -12,7 +12,7 @@
         <button class="btn btn-outline-warning my-2 my-sm-0" type="submit">Search</button>
     </form>
 
-    <div class="dropdown">
+    <div class="dropdown ">
         <button class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Visa</button>
         <div class="dropdown-menu">
             @foreach (var i in Model.PageSizing)
@@ -145,14 +145,19 @@
                                 {
                                     start = p - 2;
                                 }
-                                if (end == Model.TotalPages)
+
+                                if (end - 1 == Model.TotalPages)
                                 {
-                                    end = Model.Page;
+                                    end = p + 1;
                                 }
-                                for (var paging = start; start <= end; start++)
+                                if (p == Model.TotalPages)
+                                {
+                                    end = p;
+                                }
+                                for (; start <= end; start++)
                                 {
                                     <li class="page-item @(Model.Page == start ? "active" : "")">
-                                        <a class="page-link active text-warning"
+                                        <a class="page-link active text-warning "
                                            asp-action="Index"
                                            asp-route-q="@Model.q"
                                            asp-route-sortField="@Model.SortField"

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using SakilaMovieInterfaceLab.Data;
 
@@ -7,7 +8,10 @@ namespace SakilaMovieInterfaceLab.ViewModels
     public class MovieIndexViewModel
     {
         public List<FilmViewModel> Films { get; set; } = new List<FilmViewModel>();
+
+        [StringLength(25)]
         public string q { get; set; }
+
         public string SortOrder { get; set; }
         public string SortField { get; set; }
         public string OpositeSortOrder { get; set; }
