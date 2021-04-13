@@ -33,7 +33,7 @@ namespace SakilaMovieInterfaceLab.Controllers
             }
             if (!string.IsNullOrEmpty(pageSize))
             {
-                size = Int32.Parse(pageSize);
+                size = int.Parse(pageSize);
             }
 
             if (sortField == "Title")
