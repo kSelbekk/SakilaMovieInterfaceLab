@@ -19,5 +19,8 @@ namespace SakilaMovieInterfaceLab.ViewModels
 
         [MaxLength(10)]
         public string Rating { get; set; }
+
+        [MaxLength(200)]
+        public string Description { get; set; }
     }
 }

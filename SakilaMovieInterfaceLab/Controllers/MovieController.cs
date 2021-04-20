@@ -10,10 +10,12 @@ namespace SakilaMovieInterfaceLab.Controllers
     public class MovieController : Controller
     {
         private readonly IMovieRepository _movieRepository;
+        private readonly sakilaContext _context;
 
-        public MovieController(IMovieRepository movieRepository)
+        public MovieController(IMovieRepository movieRepository, sakilaContext _context)
         {
             _movieRepository = movieRepository;
+            this._context = _context;
         }
 
         // GET
@@ -110,8 +112,26 @@ namespace SakilaMovieInterfaceLab.Controllers
             viewModel.Lenght = dbFilm.Length;
             viewModel.Rating = dbFilm.Rating;
             viewModel.ReleaseYear = dbFilm.ReleaseYear;
+            viewModel.Description = dbFilm.Description;
 
             return View(viewModel);
+        }
+
+        [HttpPost]
+        public IActionResult EditMovie(EditMovieViewModel viewModel, int id)
+        {
+            if (!ModelState.IsValid) return View(viewModel);
+
+            var dbFilm = _movieRepository.GetSelectedMovie(id);
+            dbFilm.Title = viewModel.Title;
+            dbFilm.Description = viewModel.Description;
+            dbFilm.Length = viewModel.Lenght;
+            dbFilm.Rating = viewModel.Rating;
+            dbFilm.ReleaseYear = viewModel.ReleaseYear;
+
+            _context.SaveChanges();
+
+            return RedirectToAction("Index");
         }
     }
 

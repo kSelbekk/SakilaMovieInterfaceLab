@@ -27,7 +27,7 @@ namespace SakilaMovieInterfaceLab
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddTransient<IMovieRepository, MovieRepository>();
-            services.Decorate<IMovieRepository, CachedMovies>();
+            //services.Decorate<IMovieRepository, CachedMovies>();
 
             services.AddControllersWithViews();
 
