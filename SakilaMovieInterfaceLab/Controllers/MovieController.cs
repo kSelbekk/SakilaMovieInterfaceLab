@@ -25,7 +25,7 @@ namespace SakilaMovieInterfaceLab.Controllers
 
             if (string.IsNullOrEmpty(sortField))
             {
-                sortField = "Title";
+                sortField = SortOptions.Title.ToString();
             }
             if (string.IsNullOrEmpty(sortOrder))
             {
@@ -36,15 +36,15 @@ namespace SakilaMovieInterfaceLab.Controllers
                 size = int.Parse(pageSize);
             }
 
-            if (sortField == "Title")
+            if (sortField == SortOptions.Title.ToString())
             {
                 query = sortOrder == "asc" ? query.OrderBy(t => t.Title) : query.OrderByDescending(t => t.Title);
             }
-            if (sortField == "Release Year")
+            if (sortField == SortOptions.ReleaseYear.ToString())
             {
                 query = sortOrder == "asc" ? query.OrderBy(t => t.ReleaseYear) : query.OrderByDescending(t => t.ReleaseYear);
             }
-            if (sortField == "Rental Rate")
+            if (sortField == SortOptions.RentalRate.ToString())
             {
                 query = sortOrder == "asc" ? query.OrderBy(t => t.RentalRate) : query.OrderByDescending(t => t.RentalRate);
             }
@@ -98,5 +98,27 @@ namespace SakilaMovieInterfaceLab.Controllers
 
             return View(viewModel);
         }
+
+        public IActionResult EditMovie(int id)
+        {
+            var viewModel = new EditMovieViewModel();
+
+            var dbFilm = _movieRepository.GetSelectedMovie(id);
+
+            viewModel.FilmId = dbFilm.FilmId;
+            viewModel.Title = dbFilm.Title;
+            viewModel.Lenght = dbFilm.Length;
+            viewModel.Rating = dbFilm.Rating;
+            viewModel.ReleaseYear = dbFilm.ReleaseYear;
+
+            return View(viewModel);
+        }
+    }
+
+    public enum SortOptions
+    {
+        Title,
+        ReleaseYear,
+        RentalRate
     }
 }

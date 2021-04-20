@@ -1,0 +1,28 @@
+﻿@model SakilaMovieInterfaceLab.ViewModels.EditMovieViewModel
+
+@{
+    ViewData["Title"] = "Edit Movies";
+}
+<div class="card m-4 bg-dark text-white" style="width: auto;">
+    <div class="card-body">
+        <div class="input-group mb-3">
+            <label asp-for="Title" class="mr-2"></label>
+            <input class="form-control" placeholder="Username" asp-for="Title">
+        </div>
+        <div class="input-group mb-3">
+            <label asp-for="ReleaseYear" class="mr-2"></label>
+            <input class="form-control" placeholder="Username" asp-for="ReleaseYear">
+        </div>
+        <div class="input-group mb-3">
+            <label asp-for="Lenght" class="mr-2"></label>
+            <input class="form-control" placeholder="Username" asp-for="Lenght">
+        </div>
+        <div class="input-group mb-3">
+            <label asp-for="Rating" class="mr-2"></label>
+            <input class="form-control" placeholder="Username" asp-for="Rating">
+        </div>
+    </div>
+    <div class="card-footer">
+        <a type="button" class="btn bg-warning">Save</a>
+    </div>
+</div>
